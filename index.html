@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wandr — Travel Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">✦</span>
+        <span class="logo-text">Wandr</span>
+      </div>
+      <button id="lang-toggle" class="lang-btn" aria-label="Switch language">
+        <span class="lang-icon">🌐</span>
+        <span id="lang-label">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb--1"></div>
+      <div class="hero-orb hero-orb--2"></div>
+      <div class="hero-orb hero-orb--3"></div>
+      <div class="grain"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-i18n="hero_eyebrow">Your journey begins here</p>
+      <h1 class="hero-title" data-i18n="hero_title">Where are<br/><em>you going?</em></h1>
+    </div>
+  </section>
+
+  <!-- SELECTOR SECTION -->
+  <main class="dashboard">
+
+    <section class="selector-section">
+      <div class="selector-grid">
+
+        <!-- Origin -->
+        <div class="selector-block">
+          <label class="selector-label" data-i18n="label_origin">
+            <span class="selector-label-icon">🛫</span> Origin
+          </label>
+          <div class="custom-select-wrapper">
+            <select id="origin-select" class="custom-select">
+              <option value="" data-i18n="opt_choose_origin">Choose your city</option>
+              <option value="barcelona">Barcelona 🇪🇸</option>
+              <option value="london">London 🇬🇧</option>
+              <option value="paris">Paris 🇫🇷</option>
+              <option value="new_york">New York 🇺🇸</option>
+              <option value="tokyo">Tokyo 🇯🇵</option>
+              <option value="berlin">Berlin 🇩🇪</option>
+              <option value="rome">Rome 🇮🇹</option>
+              <option value="dubai">Dubai 🇦🇪</option>
+              <option value="sydney">Sydney 🇦🇺</option>
+            </select>
+            <span class="select-arrow">↓</span>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="selector-arrow-block">
+          <div class="route-arrow">→</div>
+        </div>
+
+        <!-- Destination -->
+        <div class="selector-block">
+          <label class="selector-label" data-i18n="label_destination">
+            <span class="selector-label-icon">🛬</span> Destination
+          </label>
+          <div class="custom-select-wrapper">
+            <select id="city-select" class="custom-select">
+              <option value="" data-i18n="opt_choose_destination">Choose destination</option>
+              <option value="barcelona">Barcelona 🇪🇸</option>
+              <option value="london">London 🇬🇧</option>
+              <option value="paris">Paris 🇫🇷</option>
+              <option value="new_york">New York 🇺🇸</option>
+              <option value="tokyo">Tokyo 🇯🇵</option>
+              <option value="berlin">Berlin 🇩🇪</option>
+              <option value="rome">Rome 🇮🇹</option>
+              <option value="dubai">Dubai 🇦🇪</option>
+              <option value="sydney">Sydney 🇦🇺</option>
+            </select>
+            <span class="select-arrow">↓</span>
+          </div>
+        </div>
+
+      </div>
+
+      <button id="explore-btn" class="explore-btn" disabled>
+        <span data-i18n="btn_explore">Explore destination</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </section>
+
+    <!-- DASHBOARD CONTENT (hidden until city selected) -->
+    <div id="dashboard-content" class="dashboard-content hidden">
+
+      <!-- Loading State -->
+      <div id="loading-state" class="loading-state hidden">
+        <div class="loader-ring"></div>
+        <p data-i18n="loading">Loading data…</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="error-state hidden">
+        <span class="error-icon">⚠</span>
+        <p id="error-msg"></p>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="cards-grid" class="cards-grid hidden">
+
+        <!-- Card 1: Destination Summary -->
+        <article class="card card--summary">
+          <div class="card-header">
+            <span class="card-tag" data-i18n="card_summary">Destination</span>
+          </div>
+          <h2 class="card-city" id="summary-city">—</h2>
+          <p class="card-country" id="summary-country">—</p>
+          <div class="summary-meta">
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="meta_temp">Temp.</span>
+              <span class="meta-value" id="summary-temp">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="meta_currency">Currency</span>
+              <span class="meta-value" id="summary-currency">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="meta_origin">From</span>
+              <span class="meta-value" id="summary-origin">—</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Weather -->
+        <article class="card card--weather">
+          <div class="card-header">
+            <span class="card-tag" data-i18n="card_weather">Weather</span>
+          </div>
+          <div class="weather-main">
+            <div class="weather-temp-big" id="weather-temp">—</div>
+            <div class="weather-emoji" id="weather-emoji">—</div>
+          </div>
+          <div class="weather-details">
+            <div class="weather-detail">
+              <span data-i18n="weather_feels">Feels like</span>
+              <strong id="weather-feels">—</strong>
+            </div>
+            <div class="weather-detail">
+              <span data-i18n="weather_wind">Wind</span>
+              <strong id="weather-wind">—</strong>
+            </div>
+            <div class="weather-detail">
+              <span data-i18n="weather_humidity">Humidity</span>
+              <strong id="weather-humidity">—</strong>
+            </div>
+          </div>
+          <div class="rain-bar-wrap">
+            <div class="rain-bar-label">
+              <span id="rain-label-text">—</span>
+              <span id="rain-percent">—</span>
+            </div>
+            <div class="rain-bar-track">
+              <div class="rain-bar-fill" id="rain-bar-fill"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3: Currency Conversion -->
+        <article class="card card--currency">
+          <div class="card-header">
+            <span class="card-tag" data-i18n="card_currency">Currency</span>
+          </div>
+          <div class="currency-from-info">
+            <span id="currency-from-name">—</span>
+            <span class="currency-arrow">⇄</span>
+            <span id="currency-to-name">—</span>
+          </div>
+          <div class="currency-input-wrap">
+            <label class="currency-input-label">
+              <span id="currency-from-label">EUR</span>
+            </label>
+            <input type="number" id="currency-amount" class="currency-input" value="100" min="0" step="0.01" />
+          </div>
+          <div class="currency-result-wrap">
+            <div class="currency-result-main" id="currency-result">—</div>
+            <div class="currency-rate" id="currency-rate-text">—</div>
+          </div>
+        </article>
+
+        <!-- Card 4: Travel Tip -->
+        <article class="card card--tip">
+          <div class="card-header">
+            <span class="card-tag" data-i18n="card_tip">Travel Tip</span>
+          </div>
+          <blockquote class="tip-message" id="tip-message">—</blockquote>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>Wandr &copy; 2025 · <span data-i18n="footer_text">Powered by Open-Meteo & Exchange Rate API</span></p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
